@@ -8,6 +8,11 @@ interface Result {
   average: number
 }
 
+interface inputValues_1 {
+  target: number
+  exerciseHours: number[]
+}
+
 const calculateExercises = (
   exerciseHours: number[],
   target: number,
@@ -42,8 +47,30 @@ const calculateExercises = (
   }
 }
 
-const exerciseHours: number[] = [3, 0, 2, 4.5, 0, 3, 1]
-const target: number = 2
 
-const result: Result = calculateExercises(exerciseHours, target)
-console.log(result)
+const parseArguments = (args: string[]): inputValues_1 => {
+    if (args.length < 4) {
+      throw new Error('Not enough arguments');
+    }
+    const parsedArgs = args.slice(2).map(Number);
+    if (parsedArgs.some(isNaN)) {
+      throw new Error('Provided values were not numbers!');
+    }
+    return {
+      target: parsedArgs[0],
+      exerciseHours: parsedArgs.slice(1),
+    };
+  };
+
+
+try {
+    const { target, exerciseHours } = parseArguments(process.argv);
+  const result: Result = calculateExercises(exerciseHours, target)
+  console.log(result)
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.'
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
+    }
+    console.log(errorMessage);
+  }
