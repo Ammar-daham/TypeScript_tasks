@@ -3,11 +3,10 @@ interface inputValues {
   weight: number
 }
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   const heightInMeters = height / 100
 
   const bmi = weight / (heightInMeters * heightInMeters)
-  console.log(bmi)
   if (bmi < 18.5) {
     return 'Underweight'
   } else if (bmi >= 18.5 && bmi < 25) {
@@ -34,13 +33,12 @@ const parseInput = (args: string[]): inputValues => {
 }
 
 try {
-    const { height, weight } = parseInput(process.argv)
-    console.log(calculateBmi(height, weight))
-} catch(error: unknown) {
-    let errorMessage = 'Something bad happened.'
+  const { height, weight } = parseInput(process.argv)
+  console.log(calculateBmi(height, weight))
+} catch (error) {
+  let errorMessage = 'Something bad happened.'
   if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
+    errorMessage += ' Error: ' + error.message
   }
-  console.log(errorMessage);
+  console.log(errorMessage)
 }
-
