@@ -1,4 +1,4 @@
-interface Result {
+export interface Result {
   periodLength: number
   trainingDays: number
   success: boolean
@@ -9,11 +9,11 @@ interface Result {
 }
 
 interface inputValues_1 {
-  target: number
   exerciseHours: number[]
+  target: number
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   exerciseHours: number[],
   target: number,
 ): Result => {
