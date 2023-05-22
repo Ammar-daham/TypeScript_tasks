@@ -2,15 +2,14 @@ import express from 'express';
 
 import diagnosesRouter from './routes/diagnoseRoute';
 import patientRouter from './routes/patientRoute';
+import cors from 'cors'; 
 
 
 
 const app = express();
 app.use(express.json());
 
-import cors from 'cors'; 
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 app.use(cors());
 
 const PORT = 3001;
