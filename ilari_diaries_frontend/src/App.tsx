@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, ChangeEvent } from 'react'
 import { DiaryEntry } from './types'
 import axios from 'axios'
 
@@ -19,6 +19,14 @@ function App() {
         setDiaries(response.data)
       })
   }, [])
+
+  const handleWeatherChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setWeather(event.target.value)
+  }
+
+  const handleVisibilityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setVisibility(event.target.value)
+  }
 
   const diaryCreation = async (event: React.SyntheticEvent) => {
     event.preventDefault()
@@ -44,7 +52,7 @@ function App() {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data)
       } else {
-        console.error(error);
+        console.error(error)
       }
     }
   }
@@ -52,33 +60,136 @@ function App() {
   return (
     <div>
       <h1>Add new diary</h1>
-      {
-        error != null &&
-          <p style={{color: 'red'}}>Error: {error}</p>
-        
-      }
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       <form onSubmit={diaryCreation}>
         Date:
-        <input value={date} onChange={(event) => setDate(event.target.value)} />
-        <br />
-        Weather:
         <input
-          value={weather}
-          onChange={(event) => setWeather(event.target.value)}
+          type="date"
+          value={date}
+          onChange={(event) => setDate(event.target.value)}
         />
-        <br />
-        Visibility:
-        <input
-          value={visibility}
-          onChange={(event) => setVisibility(event.target.value)}
-        />
-        <br />
+       
+        <fieldset>
+          <legend>Select weather status:</legend>
+
+          <div>
+            <input
+              type="radio"
+              id="sunny"
+              name="sunny"
+              value="sunny"
+              checked={weather === 'sunny'}
+              onChange={handleWeatherChange}
+            />
+            <label htmlFor="sunny">sunny</label>
+          </div>
+
+          <div>
+            <input
+              type="radio"
+              id="rainy"
+              name="rainy"
+              value="rainy"
+              checked={weather === 'rainy'}
+              onChange={handleWeatherChange}
+            />
+            <label htmlFor="rainy">rainy</label>
+          </div>
+
+          <div>
+            <input
+              type="radio"
+              id="cloudy"
+              name="cloudy"
+              value="cloudy"
+              checked={weather === 'cloudy'}
+              onChange={handleWeatherChange}
+            />
+            <label htmlFor="cloudy">cloudy</label>
+          </div>
+
+          <div>
+            <input
+              type="radio"
+              id="stormy"
+              name="stormy"
+              value="stormy"
+              checked={weather === 'stormy'}
+              onChange={handleWeatherChange}
+            />
+            <label htmlFor="stormy">stormy</label>
+          </div>
+
+          <div>
+            <input
+              type="radio"
+              id="windy"
+              name="windy"
+              value="windy"
+              checked={weather === 'windy'}
+              onChange={handleWeatherChange}
+            />
+            <label htmlFor="windy">windy</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Select visibility status:</legend>
+
+          <div>
+            <input
+              type="radio"
+              id="great"
+              name="great"
+              value="great"
+              checked={visibility === 'great'}
+              onChange={handleVisibilityChange}
+            />
+            <label htmlFor="great">great</label>
+          </div>
+
+          <div>
+            <input
+              type="radio"
+              id="good"
+              name="good"
+              value="good"
+              checked={visibility === 'good'}
+              onChange={handleVisibilityChange}
+            />
+            <label htmlFor="good">good</label>
+          </div>
+
+          <div>
+            <input
+              type="radio"
+              id="ok"
+              name="ok"
+              value="ok"
+              checked={visibility === 'ok'}
+              onChange={handleVisibilityChange}
+            />
+            <label htmlFor="ok">ok</label>
+          </div>
+
+          <div>
+            <input
+              type="radio"
+              id="poor"
+              name="poor"
+              value="poor"
+              checked={visibility === 'poor'}
+              onChange={handleVisibilityChange}
+            />
+            <label htmlFor="poor">poor</label>
+          </div>
+
+        </fieldset>
         Comment:
         <input
           value={comment}
           onChange={(event) => setComment(event.target.value)}
         />
-        <br/>
+        <br />
         <button type="submit">add</button>
       </form>
       <h1>Diary entries</h1>
