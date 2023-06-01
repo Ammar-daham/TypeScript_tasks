@@ -4,13 +4,18 @@ import patientService from '../../services/patients'
 import { Patient, Entry } from '../../types'
 import MaleIcon from '@mui/icons-material/Male'
 import FemaleIcon from '@mui/icons-material/Female'
+import { Diagnose } from '../../types'
 
 
-const PatientPage = () => {
+interface Props {
+  diagnoses: Diagnose[]
+}
+
+const PatientPage = ({diagnoses}: Props ) => {
   const [patient, setPatient] = useState<Patient>()
 
+  console.log('di: ', diagnoses)
   const id = useParams().id as string
-
   useEffect(() => {
     const fetchPatient = async () => {
       const patient = await patientService.getPatient(id)
@@ -33,13 +38,18 @@ const PatientPage = () => {
       <h3>entries</h3>
       {
         patient?.entries.map((entry: Entry) => (
-          <div>
+          <div key={entry.id}>
             <p>{entry.date} {entry.description}</p>
             <ul>
               {
-                entry.diagnosisCodes?.map(code => (
-                  <li>{code}</li>
-                ))
+                entry.diagnosisCodes?.map((code, index) => {
+                  const diagnose = diagnoses.find(c => c.code === code) 
+                  return (
+                    <li key={index}>{code}{" " + diagnose?.name}</li>
+                  )
+                }
+                  )
+                  
               }
             </ul>
           </div>
