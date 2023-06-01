@@ -5,13 +5,13 @@ import { Patient, Entry } from '../../types'
 import MaleIcon from '@mui/icons-material/Male'
 import FemaleIcon from '@mui/icons-material/Female'
 import { Diagnose } from '../../types'
-
+import EntryDetails from './Entry'
 
 interface Props {
   diagnoses: Diagnose[]
 }
 
-const PatientPage = ({diagnoses}: Props ) => {
+const PatientPage = ({ diagnoses }: Props) => {
   const [patient, setPatient] = useState<Patient>()
 
   console.log('di: ', diagnoses)
@@ -34,27 +34,13 @@ const PatientPage = ({diagnoses}: Props ) => {
       ssn: {patient?.ssn}
       <br />
       occupation: {patient?.occupation}
-      <br/>
+      <br />
       <h3>entries</h3>
-      {
-        patient?.entries.map((entry: Entry) => (
-          <div key={entry.id}>
-            <p>{entry.date} {entry.description}</p>
-            <ul>
-              {
-                entry.diagnosisCodes?.map((code, index) => {
-                  const diagnose = diagnoses.find(c => c.code === code) 
-                  return (
-                    <li key={index}>{code}{" " + diagnose?.name}</li>
-                  )
-                }
-                  )
-                  
-              }
-            </ul>
-          </div>
-        ))
-      }
+      {patient?.entries.map((entry: Entry) => (
+        <div key={entry.id}>
+          <EntryDetails entry={entry} diagnoses={diagnoses}/>
+        </div>
+      ))}
     </div>
   )
 }
