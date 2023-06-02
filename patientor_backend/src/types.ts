@@ -11,7 +11,6 @@ export enum HealthCheckRating {
     "CriticalRisk" = 3
   }
 
-
 export interface Diagnose {
     code: string;
     name: string;
@@ -53,10 +52,7 @@ export interface HospitalEntry extends BaseEntry {
 }
 
 
-export type Entry =
-  | HospitalEntry
-  | OccupationalHealthcareEntry
-  | HealthCheckEntry;
+export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
 
 export interface Patient {
@@ -73,6 +69,10 @@ export interface Patient {
 export type NonSensitivePatientData = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NewPatient = Omit<Patient, 'id'>;
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type NewEntry= UnionOmit<Entry, 'id'>;
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -129,7 +129,13 @@ export const parseEntry = (entry: Entry): Entry[] => {
     if (!entry) {
       throw new Error('Incorrect or missing entry');
     }
-    
-    // Assuming the entry is already properly formatted, no additional parsing needed
     return [entry];
+};
+
+export const parseDiagnosisCodes = (object: unknown): Array<Diagnose['code']> =>  {
+    if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
+      // we will just trust the data to be in correct form
+      return [] as Array<Diagnose['code']>;
+    } 
+    return object.diagnosisCodes as Array<Diagnose['code']>;
 };
